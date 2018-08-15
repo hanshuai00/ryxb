@@ -1,0 +1,1 @@
+恭喜${customerName}中奖了，参与${quantity}人次夺得${goodsName}。
