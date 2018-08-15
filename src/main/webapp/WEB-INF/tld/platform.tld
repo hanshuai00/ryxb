@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE taglib
+  PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+  "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>p</short-name>
+  <uri>/platform</uri>
+  <tag>
+    <name>base</name>
+    <tag-class>support.tag.BaseTag</tag-class>
+    <body-content>empty</body-content>
+  </tag>
+  <tag>
+    <name>basePath</name>
+    <tag-class>support.tag.BasePathTag</tag-class>
+    <body-content>empty</body-content>
+  </tag>
+  <tag>
+    <name>baseHead</name>
+    <tag-class>support.tag.BaseHeadTag</tag-class>
+    <body-content>empty</body-content>
+  </tag>
+  <tag>
+    <name>randomTag</name>
+    <tag-class>support.tag.RandomTag</tag-class>
+    <body-content>empty</body-content>
+  </tag>
+  <tag>
+    <name>dicCodeList</name>
+    <tag-class>support.tag.DictionaryListTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+    	<name>kindCode</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>varDictionarylist</name>
+    	<required>false</required>
+    </attribute>
+  </tag>
+  <tag>
+    <name>dicCode4Value</name>
+    <tag-class>support.tag.DicCode4ValueTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+    	<name>kindCode</name>
+    	<required>true</required>
+    	<rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+    	<name>dicCode</name>
+    	<required>true</required>
+    	<rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <!-- <description>权限校验标签，有权限就显示标签体的内容，否则不显示</description> -->
+    <name>permission</name> <!-- 标签名 -->
+    <tag-class>support.tag.PermissionTag</tag-class> 
+    <body-content>JSP</body-content>
+    <attribute>
+        <name>method</name> <!-- 方法名 -->
+        <required>true</required> <!-- 标签的属性是否是必须的 -->
+        <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>  
+  <tag>
+    <name>interList</name>
+    <tag-class>support.tag.InterfaceListTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+    	<name>varInterList</name>
+    	<required>true</required>
+    </attribute>
+  </tag>
+</taglib>
