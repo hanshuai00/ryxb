@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/task 
+     http://www.springframework.org/schema/task/spring-task.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context.xsd">
+     
+    <task:annotation-driven scheduler="scheduler"/>
+	<task:scheduler id="scheduler" pool-size="30"/>
+	
+	<!-- 定時更新客户红包失效状态 -->
+	<bean name="bonusService" class="com.zj.ryxb.service.BonusService"/>
+	<bean name="drawLotteryService" class="com.zj.ryxb.service.DrawLotteryService"/> 
+	
+	
+	<!-- 定义调用对象和调用对象的方法，这个配置和普通的一样的,id是JobDetail的名字  --> 
+	<!-- 使用MethodInvokingJobDetailFactoryBean，任务类可以不实现Job接口，通过targetMethod指定调用方法-->
+ 	<bean id="bonusStatusTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+ 		<!--false表示等上一个任务执行完后再开启新的任务-->
+    	<property name="concurrent" value="false"/>
+        <property name="targetObject" ref="bonusService"/>  
+        <property name="targetMethod" value="updateStatus"/>  
+    </bean>
+    
+     <!-- 触发器 -->  
+    <bean id="bonusStatusTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="bonusStatusTask"></property>  
+        <property name="cronExpression" value="01 00 00 * * ?"></property> <!-- 每天上午00:00:01 触发  --> 
+    </bean>
+     <!-- 定义触发时间 ，这边就不同了，这里必须将时间设置成无限长，因为我们要去读取数据库的时间来做为定时器的触发时间-->  
+    <!-- <bean id="drawLotteryTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean ">  
+        <property name="jobDetail" ref="drawLotteryTask" />
+        <property name="cronExpression" value="0/5 * * * * ?" />  
+    </bean> -->
+    
+     <!-- 调度器 -->  
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+        <property name="triggers">  
+            <list>  
+                <!-- 触发器列表 -->  
+                <ref bean="bonusStatusTrigger"/>
+            </list>  
+        </property>  
+    </bean>
+    
+    <!--这个类是用来设置触发时间的， startJobs方法启动调度容器，然后按照上面触发器每隔1s执行所配置的myJob2.doSomething()方法 -->     
+    <bean id="quartzManager" class="com.zj.ryxb.common.quartz.QuartzManager2" lazy-init="false" init-method="startJobs" >  
+        <!--这个对象一定要注入，这样类才能进行管理，还有在类型要用get set方法，不然会报错。-->  
+        <property name="scheduler" ref="schedulerFactoryBean" />  
+    </bean>
+	
+</beans>
