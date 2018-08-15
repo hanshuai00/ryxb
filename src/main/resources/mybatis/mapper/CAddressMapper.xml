@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.CAddressMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.CAddress" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="receiverName" property="receiverName" jdbcType="VARCHAR" />
+    <result column="provinceId" property="provinceId" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="cityId" property="cityId" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="districtId" property="districtId" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="streetInfo" property="streetInfo" jdbcType="VARCHAR" />
+    <result column="postalCode" property="postalCode" jdbcType="VARCHAR" />
+    <result column="cellPhone" property="cellPhone" jdbcType="VARCHAR" />
+    <result column="default_address" property="defaultAddress" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, customer_id,receiverName,provinceId, province, cityId, city, districtId, district, streetInfo, 
+    postalCode, cellPhone, default_address, enabled, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from c_address
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from c_address
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.CAddress" useGeneratedKeys="true" keyProperty="id"  >
+    insert into c_address (id, customer_id,receiverName, provinceId, 
+      province, cityId, city, 
+      districtId, district, streetInfo, 
+      postalCode, cellPhone, default_address, 
+      enabled, create_time)
+    values (#{id,jdbcType=BIGINT}, #{customerId,jdbcType=BIGINT}, #{receiverName,jdbcType=VARCHAR}, #{provinceId,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+      #{districtId,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{streetInfo,jdbcType=VARCHAR}, 
+      #{postalCode,jdbcType=VARCHAR}, #{cellPhone,jdbcType=VARCHAR}, #{defaultAddress,jdbcType=INTEGER}, 
+      #{enabled,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.CAddress" useGeneratedKeys="true" keyProperty="id" >
+    insert into c_address
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="receiverName != null" >
+        receiverName,
+      </if>
+      <if test="provinceId != null" >
+        provinceId,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="cityId != null" >
+        cityId,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="districtId != null" >
+        districtId,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="streetInfo != null" >
+        streetInfo,
+      </if>
+      <if test="postalCode != null" >
+        postalCode,
+      </if>
+      <if test="cellPhone != null" >
+        cellPhone,
+      </if>
+      <if test="defaultAddress != null" >
+        default_address,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="receiverName != null" >
+        #{receiverName,jdbcType=BIGINT},
+      </if>
+      <if test="provinceId != null" >
+        #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="districtId != null" >
+        #{districtId,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="streetInfo != null" >
+        #{streetInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null" >
+        #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cellPhone != null" >
+        #{cellPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultAddress != null" >
+        #{defaultAddress,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.CAddress" >
+    update c_address
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+       <if test="receiverName != null" >
+        receiverName = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null" >
+        provinceId = #{provinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        cityId = #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="districtId != null" >
+        districtId = #{districtId,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="streetInfo != null" >
+        streetInfo = #{streetInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null" >
+        postalCode = #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cellPhone != null" >
+        cellPhone = #{cellPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultAddress != null" >
+        default_address = #{defaultAddress,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.CAddress" >
+    update c_address
+    set customer_id = #{customerId,jdbcType=BIGINT},
+      receiverName = #{receiverName,jdbcType=VARCHAR},
+      provinceId = #{provinceId,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      cityId = #{cityId,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      districtId = #{districtId,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      streetInfo = #{streetInfo,jdbcType=VARCHAR},
+      postalCode = #{postalCode,jdbcType=VARCHAR},
+      cellPhone = #{cellPhone,jdbcType=VARCHAR},
+      default_address = #{defaultAddress,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+  
+  <select id="selectByCustomerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from c_address
+    where customer_id = #{customerId,jdbcType=BIGINT} 
+    LIMIT 1
+  </select>
+  
+   <!-- 根据map条件分页查询数据列表-->
+  <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from c_address  
+    <include refid="queryByMap" />
+	order by id desc
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1) from c_address 
+	  <include refid="queryByMap" />
+  </select>
+  
+   <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+    	<if test="customerId !=null">
+			and customer_id = #{customerId} 
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+  </sql>
+  
+</mapper>

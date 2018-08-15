@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.CBonusMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.CBonus" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="bonus_id" property="bonusId" jdbcType="BIGINT" />
+    <result column="bonus_name" property="bonusName" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="expiry_date" property="expiryDate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, customer_id, bonus_id, bonus_name, amount,DATE_FORMAT(expiry_date,'%Y-%m-%d'), status, enabled, create_time
+  </sql>
+ <!--  <sql id="Base_Column_List" >
+    id, customer_id, bonus_id, bonus_name, amount,expiry_date, status, enabled, create_time
+  </sql> -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from c_bonus
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from c_bonus
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.CBonus" useGeneratedKeys="true" keyProperty="id" >
+    insert into c_bonus (id, customer_id, bonus_id, 
+      bonus_name, amount,expiry_date, status, 
+      enabled, create_time)
+    values (#{id,jdbcType=BIGINT}, #{customerId,jdbcType=BIGINT}, #{bonusId,jdbcType=BIGINT}, 
+      #{bonusName,jdbcType=VARCHAR},#{amount,jdbcType=DOUBLE},#{expiryDate,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{enabled,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.CBonus" useGeneratedKeys="true" keyProperty="id" >
+    insert into c_bonus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="bonusId != null" >
+        bonus_id,
+      </if>
+      <if test="bonusName != null" >
+        bonus_name,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="expiryDate != null" >
+        expiry_date,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="bonusId != null" >
+        #{bonusId,jdbcType=BIGINT},
+      </if>
+      <if test="bonusName != null" >
+        #{bonusName,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="expiryDate != null" >
+        #{expiryDate,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.CBonus" >
+    update c_bonus
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="bonusId != null" >
+        bonus_id = #{bonusId,jdbcType=BIGINT},
+      </if>
+      <if test="bonusName != null" >
+        bonus_name = #{bonusName,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="expiryDate != null" >
+        expiry_date = #{expiryDate,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.CBonus" >
+    update c_bonus
+    set customer_id = #{customerId,jdbcType=BIGINT},
+      bonus_id = #{bonusId,jdbcType=BIGINT},
+      bonus_name = #{bonusName,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DOUBLE},
+      expiry_date = #{expiryDate,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+ <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+  
+  <!-- 根据map条件查询红包种类 -->
+  <select id="queryCBonusList" parameterType="java.util.Map" resultType="com.zj.ryxb.model.CBonus">
+    select c.id,c.customer_id customerId,c.bonus_id bonusId,
+			c.bonus_name bonusName,
+			c.amount,
+			DATE_FORMAT(c.expiry_date, '%Y-%m-%d') useDate,
+			c. STATUS,
+			c.enabled,
+			b.description,
+			b.use_condition useCondition
+    FROM c_bonus c LEFT JOIN b_bonus b ON c.bonus_id = b.id AND b.enabled = 1
+    where c.bonus_id =b.id and b.enabled=1
+    	<if test="customerId !=null">
+			and c.customer_id = #{customerId}
+		</if>
+		<if test="bonusId !=null">
+			and c.bonus_id = #{bonusId}
+		</if>
+    	<if test='bonusName !=null'>
+			and c.bonus_name like #{bonusName}
+		</if>
+		<if test="amount !=null">
+			and c.amount = #{amount}
+		</if>
+		<if test="expiryDate !=null">
+			and c.expiry_date &lt;=  #{expiryDate}
+		</if>
+		<if test="status !=null">
+			and c.status = #{status}
+		</if>
+		<if test="enabled !=null">
+			and c.enabled = #{enabled}
+		</if>
+		order by c.id desc
+  </select>
+  <!-- <select id="queryCBonusList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from c_bonus  where 1=1
+    	<if test="customerId !=null">
+			and customer_id = #{customerId}
+		</if>
+		<if test="bonusId !=null">
+			and bonus_id = #{bonusId}
+		</if>
+    	<if test='bonusName !=null'>
+			and bonus_name like #{bonusName}
+		</if>
+		<if test="amount !=null">
+			and amount = #{amount}
+		</if>
+		<if test="expiryDate !=null">
+			and expiry_date &lt;=  #{expiryDate}
+		</if>
+		<if test="status !=null">
+			and status = #{status}
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+		order by id desc
+  </select> -->
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT count(1) from c_bonus 
+	    <include refid="queryByMap" />
+  </select>
+  
+  <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+      	<if test="customerId !=null">
+			and customer_id = #{customerId}
+		</if>
+		<if test="bonusId !=null">
+			and bonus_id = #{bonusId}
+		</if>
+    	<if test='bonusName !=null'>
+			and bonus_name like #{bonusName}
+		</if>
+		<if test="amount !=null">
+			and amount = #{amount}
+		</if>
+		<if test="expiryDate !=null">
+			and expiry_date &lt;=  #{expiryDate}
+		</if>
+		<if test="status !=null">
+			and status = #{status}
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+  </sql>
+  
+   <!-- 更新客户红包为失效状态 -->
+  <update id="updateStatus" parameterType="java.util.Map"  >
+    update c_bonus b set  b.`status` = #{newStatus,jdbcType=INTEGER} 
+    where  b.`status` = #{oldStatus,jdbcType=INTEGER} and b.expiry_date &lt;=  #{expiryDate,jdbcType=VARCHAR} 
+  </update>
+</mapper>

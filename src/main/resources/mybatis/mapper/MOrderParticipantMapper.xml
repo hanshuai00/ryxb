@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.MOrderParticipantMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.MOrderParticipant" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goods_id" property="goodsId" jdbcType="BIGINT" />
+    <result column="issue" property="issue" jdbcType="INTEGER" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="userImage" property="userimage" jdbcType="VARCHAR" />
+    <result column="lastip" property="lastip" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="first_region" property="firstRegion" jdbcType="VARCHAR" />
+    <result column="secone_region" property="seconeRegion" jdbcType="VARCHAR" />
+    <result column="isbought" property="isbought" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- <select id="selectByGoodidIssue" resultMap="BaseResultMap" parameterType="java.util.Map" >
+	SELECT d.id, d.customer_id, c.nickname, c.userImage, l.lastip, d.quantity
+	, d.create_time,r.first_region,r.secone_region
+    ,case when d.customer_id = #{customerId,jdbcType=BIGINT} then '1' else '0' end isbought 
+	FROM m_order_detail d
+	left join c_customer c on d.customer_id = c.id
+	left join b_login_log l on l.user_id = d.customer_id and l.id in(
+		SELECT max(id) id from b_login_log where user_type =2 and action =1 GROUP BY user_id
+	)
+	left join b_ip_database i on INET_ATON(l.lastip) BETWEEN i.start_long and i.end_long
+	left join b_ip_region r on i.geo_id = r.geo_id
+	where goods_id = #{goodsId,jdbcType=BIGINT} and issue = #{issue,jdbcType=INTEGER}
+	order by id
+  </select> -->
+  <!-- 查询 商品详情 ——订单详情数据参与人列表 (含未支付订单) -->
+  <select id="selectByGoodidIssue" resultMap="BaseResultMap" parameterType="java.util.Map" >
+	SELECT d.id, d.customer_id, c.nickname, c.userImage, l.lastip, d.quantity,
+	d.create_time,r.first_region,r.secone_region,
+    case when d.customer_id = #{customerId,jdbcType=BIGINT} then '1' else '0' end isbought 
+	from m_order o
+	LEFT JOIN m_order_detail d on d.order_num = o.order_num and o.`status` >=0
+	left join c_customer c on d.customer_id = c.id
+	left join b_login_log l on l.user_id = d.customer_id and l.id in(
+		SELECT max(id) id from b_login_log where user_type =2 and action =1 GROUP BY user_id
+	)
+	left join b_ip_database i on INET_ATON(l.lastip) BETWEEN i.start_long and i.end_long
+	left join b_ip_region r on i.geo_id = r.geo_id
+	where goods_id = #{goodsId,jdbcType=BIGINT} and issue = #{issue,jdbcType=INTEGER}
+	order by id
+  </select>
+  
+    <select id="selectLastIp" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	SELECT l.user_id customer_id,l.lastip,r.first_region,r.secone_region
+	from b_login_log l
+	left join b_ip_database d on INET_ATON(l.lastip) BETWEEN d.start_long and d.end_long
+	left join b_ip_region r on d.geo_id = r.geo_id
+	where l.id in (
+			SELECT max(id) from b_login_log 
+			where user_type =2 and action =1 and user_id = #{customerId,jdbcType=BIGINT}
+			group by user_id
+	)
+  </select>
+  
+  
+</mapper>

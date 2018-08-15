@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.MOrderCommentMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.MOrderComment" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goods_id" property="goodsId" jdbcType="BIGINT" />
+    <result column="issue" property="issue" jdbcType="INTEGER" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="comment_image" property="commentImage" jdbcType="VARCHAR" />
+    <result column="praise_count" property="praiseCount" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, goods_id,issue,order_num, customer_id,nickname, comment, comment_image,praise_count, enabled, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_order_comment
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_order_comment
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.MOrderComment" useGeneratedKeys="true" keyProperty="id"  >
+    insert into m_order_comment (id, goods_id,issue,order_num, customer_id,nickname, 
+      comment,comment_image, praise_count, enabled, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{issue,jdbcType=INTEGER},
+      #{orderNum,jdbcType=VARCHAR},#{customerId,jdbcType=BIGINT},#{nickname,jdbcType=VARCHAR}, 
+      #{comment,jdbcType=VARCHAR}, #{commentImage,jdbcType=VARCHAR}, #{praiseCount,jdbcType=INTEGER},
+      #{enabled,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.MOrderComment" useGeneratedKeys="true" keyProperty="id"  >
+    insert into m_order_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="issue != null" >
+        issue,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="commentImage != null" >
+        comment_image,
+      </if>
+      <if test="praiseCount != null" >
+        praise_count,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="issue != null" >
+        #{issue,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="commentImage != null" >
+        #{commentImage,jdbcType=VARCHAR},
+      </if>
+      <if test="praiseCount != null" >
+        #{praiseCount,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.MOrderComment" >
+    update m_order_comment
+    <set >
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="issue != null" >
+        issue = #{issue,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null" >
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="commentImage != null" >
+        comment_image = #{commentImage,jdbcType=VARCHAR},
+      </if>
+      <if test="praiseCount != null" >
+        praise_count = #{praiseCount,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.MOrderComment" >
+    update m_order_comment
+    set goods_id = #{goodsId,jdbcType=BIGINT},
+      issue = #{issue,jdbcType=INTEGER},
+      order_num = #{orderNum,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=BIGINT},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      comment_image = #{commentImage,jdbcType=VARCHAR},
+      praise_count = #{praiseCount,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+  
+  <!-- 根据map条件分页查询数据列表-->
+  <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from m_order_comment  
+    <include refid="queryByMap" />
+	order by id desc
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1) from m_order_comment 
+	  <include refid="queryByMap" />
+  </select>
+  
+   <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+    	<if test="goodsId !=null">
+			and goods_id = #{goodsId}
+		</if>
+		<if test="customerId !=null">
+			and customer_id = #{customerId}
+		</if>
+		<if test="orderNum !=null">
+			and order_num = #{orderNum}
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+  </sql>
+  
+  <!-- 根据map条件分页查询List<map>数据列表(多表级联查询) -->
+  <select id="queryListMapByPage" parameterType="java.util.Map" resultType="java.util.Map">
+	 SELECT  a.id, a.goods_id,a.issue,a.order_num,a.customer_id,a.nickname,a.`comment`,
+	        a.comment_image,a.enabled,a.create_time, a.userImage,a.user_name, a.c_nikename,
+	 		w.goods_name,w.goods_image,w.person_count,w.order_num as win_orderNum, w.draw_time
+	  from 
+		  (select m.id, m.goods_id,m.issue,m.order_num,m.customer_id, m.nickname,m.`comment`,m.comment_image,
+		         m.enabled,m.create_time, c.userImage,c.user_name, c.nickname as c_nikename
+		   from m_order_comment m,c_customer c
+		   where m.customer_id = c.id and m.enabled =1 ORDER BY m.id DESC) a
+	 LEFT JOIN m_order_win w
+	  on  a.goods_id= w.goods_id AND a.issue =w.issue
+	where 1=1 
+	   <if test="customerId !=null">
+		and a.customer_id = #{customerId}
+	   </if>
+	   <if test="goodsId !=null">
+		and a.goods_id = #{goodsId}
+	   </if>
+	   <if test="enabled !=null">
+		and a.enabled = #{enabled}
+	  </if>
+	  <if test="enabled !=null">
+		and w.enabled = #{enabled}
+	  </if>
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 分页查询List<map>统计数据总条数 (多表级联查询统计) -->
+ <select id="findListMapTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1)
+	  from 
+		  (select m.id, m.goods_id,m.issue,m.order_num,m.customer_id, m.nickname,m.`comment`,m.comment_image,
+		         m.enabled,m.create_time, c.userImage,c.user_name, c.nickname as c_nikename
+		   from m_order_comment m,c_customer c
+		   where m.customer_id = c.id and m.enabled =1 ORDER BY m.id DESC) a
+	 LEFT JOIN m_order_win w
+	  on  a.goods_id= w.goods_id AND a.issue =w.issue
+	where 1=1 
+	   <if test="customerId !=null">
+		and a.customer_id = #{customerId}
+	   </if>
+	   <if test="goodsId !=null">
+		and a.goods_id = #{goodsId}
+	   </if>
+	   <if test="enabled !=null">
+		and a.enabled = #{enabled}
+	  </if>
+	  <if test="enabled !=null">
+		and w.enabled = #{enabled}
+	 </if>
+  </select>
+  
+</mapper>

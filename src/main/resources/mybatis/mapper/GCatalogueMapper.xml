@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.GCatalogueMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.GCatalogue" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="catalogue" property="catalogue" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, parent_id, catalogue, icon, description, enabled, create_time
+  </sql>
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from g_catalogue
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from g_catalogue
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.GCatalogue" useGeneratedKeys="true" keyProperty="id" >
+    insert into g_catalogue (id, parent_id, catalogue, 
+      icon, description, enabled, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{catalogue,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{enabled,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.GCatalogue" useGeneratedKeys="true" keyProperty="id" >
+    insert into g_catalogue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="catalogue != null" >
+        catalogue,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="catalogue != null" >
+        #{catalogue,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.GCatalogue" >
+    update g_catalogue
+    <set >
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="catalogue != null" >
+        catalogue = #{catalogue,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.GCatalogue" >
+    update g_catalogue
+    set parent_id = #{parentId,jdbcType=BIGINT},
+      catalogue = #{catalogue,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+   <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+  
+    <!-- 获取商品分类根分类 -->
+  <select id="getRootCatalogue" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select 
+    <include refid="Base_Column_List" />
+    from g_catalogue
+    where parent_id =0 and enabled =1
+  </select>
+  
+   <!-- 根据map条件分页查询数据列表-->
+  <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from g_catalogue  
+    <include refid="queryByMap" />
+	order by id desc
+	<if test="pageIndex !=null and pageSize != null">
+	  limit #{pageIndex},#{pageSize}
+	 </if>
+  </select>
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1) from g_catalogue 
+	  <include refid="queryByMap" />
+  </select>
+  
+   <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+    	<if test='catalogue !=null'>
+			and catalogue  like #{catalogue}
+		</if>
+		<if test="parentId !=null">
+			and parent_id = #{parentId}
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+  </sql>
+  
+  
+</mapper>

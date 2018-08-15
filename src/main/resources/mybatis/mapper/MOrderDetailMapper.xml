@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.MOrderDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.MOrderDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="goods_id" property="goodsId" jdbcType="BIGINT" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="min_limit" property="minLimit" jdbcType="DOUBLE" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="issue" property="issue" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap1" type="com.zj.ryxb.model.MOrderDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="goods_id" property="goodsId" jdbcType="BIGINT" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="min_limit" property="minLimit" jdbcType="DOUBLE" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="issue" property="issue" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <!-- 配置映射的关联权限信息 -->
+     <!-- association:用户映射关联查询单个对象的信息 -->
+     <!-- property:要将关联查询的用户信息映射到UserCustom中哪个属性 -->
+     <association property="orderWin" javaType="com.zj.ryxb.model.MOrderWin">
+         <!-- id关联用户的唯一标识 column: 用与表示权限唯一信息的列 javaType：映射到right的哪个属性 -->
+         <id column="win_id" property="id" jdbcType="BIGINT" />
+         <id column="win_customer" property="customerId" jdbcType="BIGINT" />
+         <result column="win_nickname" property="nickname" jdbcType="VARCHAR" />
+	     <result column="person_count" property="personCount" jdbcType="INTEGER" />
+	     <result column="draw_time" property="drawTime" jdbcType="VARCHAR" />
+	     <result column="win_status" property="winStatus" jdbcType="INTEGER" />
+     </association>
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_num,customer_id, goods_id, goods_name, goods_image, price, min_limit, quantity, issue, status,
+    enabled, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_order_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+   <select id="queryByOrderNum" resultMap="BaseResultMap"  parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_order_detail
+    where enabled=1 and order_num = #{orderNum,jdbcType=VARCHAR}
+  </select>
+  <select id="getBuyList" resultMap="BaseResultMap"  parameterType="java.util.Map" >
+    select 
+    d.*
+    from m_order o
+	left join m_order_detail d on d.order_num = o.order_num and o.status >0
+    where d.enabled=1 and d.goods_id = #{goodsId,jdbcType=BIGINT} and d.issue = #{issue,jdbcType=INTEGER}
+    
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_order_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.MOrderDetail" useGeneratedKeys="true" keyProperty="id" >
+    insert into m_order_detail (id, order_num, customer_id,goods_id, 
+      goods_name, goods_image, price, 
+      min_limit, quantity, issue, status, enabled, create_time)
+    values (#{id,jdbcType=BIGINT}, #{orderNum,jdbcType=VARCHAR},#{customerId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, 
+      #{goodsName,jdbcType=VARCHAR}, #{goodsImage,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{minLimit,jdbcType=DOUBLE}, #{quantity,jdbcType=INTEGER}, #{issue,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+      #{enabled,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.MOrderDetail" useGeneratedKeys="true" keyProperty="id" >
+    insert into m_order_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsImage != null" >
+        goods_image,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="minLimit != null" >
+        min_limit,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="issue != null" >
+        issue,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImage != null" >
+        #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="minLimit != null" >
+        #{minLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="issue != null" >
+        #{issue,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.MOrderDetail" >
+    update m_order_detail
+    <set >
+      <if test="orderNum != null" >
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+       <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImage != null" >
+        goods_image = #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="minLimit != null" >
+        min_limit = #{minLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="issue != null" >
+        issue = #{issue,jdbcType=INTEGER},
+      </if>
+       <if test="status != null" >
+        issue = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.MOrderDetail" >
+    update m_order_detail
+    set order_num = #{orderNum,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=BIGINT},
+      goods_id = #{goodsId,jdbcType=BIGINT},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_image = #{goodsImage,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      min_limit = #{minLimit,jdbcType=DOUBLE},
+      quantity = #{quantity,jdbcType=INTEGER},
+      issue = #{issue,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  
+  
+  <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+  <!-- 批量添加 -->
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">  
+	    <selectKey resultType="long" keyProperty="id" order="AFTER">  
+	        SELECT  
+	        LAST_INSERT_ID()  
+	    </selectKey>  
+	    insert into m_order_detail (id, order_num,customer_id, goods_id, 
+	      goods_name, goods_image, price, 
+	      min_limit, quantity,issue,status, enabled, 
+	      create_time) 
+	    values  
+	    <foreach collection="list" item="item" index="index" separator="," > 
+	    (#{item.id}, #{item.orderNum}, #{item.customerId},#{item.goodsId}, 
+	    	#{item.goodsName}, #{item.goodsImage}, #{item.price},
+	    	#{item.minLimit}, #{item.quantity}, #{item.issue}, #{item.status}, #{item.enabled},
+	    	#{item.createTime})
+	    </foreach>  
+  </insert>
+  
+   <!-- 批量更新状态 -->
+  <update id="updateStatus" parameterType="java.util.Map"  >
+    update m_order_detail
+    set status = #{status,jdbcType=INTEGER}
+    where goods_id = #{goodsId,jdbcType=BIGINT} and issue = #{issue,jdbcType=INTEGER} 
+	<if test="orderNum != null" >
+    	and order_num != #{orderNum,jdbcType=VARCHAR}
+    </if>
+    
+  </update>
+  
+  <update id="updateWinner" parameterType="java.lang.String"  >
+    update m_order_detail
+    set status = 4
+    where order_num = #{orderNum,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据订单流水号和商品id查询订单 详细  -->
+  <select id="selectByOrderNum" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from m_order_detail
+    where order_num = #{orderNum,jdbcType=VARCHAR}
+       and 
+      goods_id = #{goodsId,jdbcType=BIGINT}
+  </select>
+  
+  
+  
+  <!-- 根据map条件分页查询数据列表-->
+  <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from m_order_detail  
+    <include refid="queryByMap" />
+	order by id desc
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1) from m_order_detail 
+	  <include refid="queryByMap" />
+  </select>
+  
+   
+  <sql id="queryByMap" >
+    <where >1=1 and enabled =1
+    	<!-- 订单流水号 in 查询 -->
+	    <!--  <if test="orderNumList != null and orderNumList.size() > 0">
+	  		and order_num in
+		  	<foreach item="orderNum" index="index" collection="orderNumList" 
+		  			open="(" separator="," close=")">
+				#{orderNum}
+			</foreach>
+	  	</if> -->
+	  	<if test="orderNum !=null">
+			and order_num = #{orderNum}
+		</if>
+	  	<if test="goodsId !=null">
+			and goods_id = #{goodsId}
+		</if>
+		<if test="customerId !=null">
+			and customer_id = #{customerId}
+		</if>
+	  	<if test="issue !=null">
+			and issue = #{issue}
+		</if>
+    </where>
+  </sql>
+  
+<!--   select  d.id,d.order_num,d.customer_id,d.goods_id,d.goods_name,d.goods_image,
+			   d.price,d.min_limit,d.quantity,d.issue,d.`status`,d.enabled,d.create_time,
+			   w.id as win_id,w.order_num as win_orderNum,w.customer_id as win_customer, w.nickname as win_nickname,
+			   w.person_count,w.draw_time,w.win_status 
+			from m_order_detail d 
+			LEFT JOIN  m_order_win w on d.goods_id=w.goods_id and d.issue=w.issue
+			LEFT JOIN m_order o on d.order_num = o.order_num and o.`status` >0
+		where 1=1 -->
+		
+  <!-- 根据map条件分页查询List<map>数据列表(多表级联查询)(不含未支付订单)  -->
+  <select id="queryListMapByPage" parameterType="java.util.Map" resultType="java.util.Map">
+	  select  d.id,d.order_num,d.customer_id,d.goods_id,d.goods_name,d.goods_image,
+		   d.price,d.min_limit,d.quantity,d.issue,d.status,d.enabled,d.create_time,o.status as o_status,
+		   w.id as win_id,w.order_num as win_orderNum,w.customer_id as win_customer, w.nickname as win_nickname,
+		   w.person_count,w.draw_time,w.win_status
+	  from m_order o
+		LEFT JOIN m_order_detail d on d.order_num = o.order_num
+	    LEFT JOIN  m_order_win w on d.goods_id=w.goods_id and d.issue=w.issue
+	  where 1=1 and o.status >0
+	<if test="customerId !=null">
+		and d.customer_id = #{customerId}
+	</if>
+	<if test="enabled !=null">
+		and d.enabled = #{enabled}
+	</if>
+	order by d.id desc
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 分页查询List<map>统计数据总条数 (多表级联查询统计) -->
+  <select id="findListMapTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	select count(1)
+		from m_order o
+		 LEFT JOIN m_order_detail d on d.order_num = o.order_num
+	     LEFT JOIN  m_order_win w on d.goods_id=w.goods_id and d.issue=w.issue
+	    where 1=1 and o.status >=0
+		<if test="customerId !=null">
+			and d.customer_id = #{customerId}
+		</if>
+		<if test="enabled !=null">
+			and d.enabled = #{enabled}
+		</if>
+		order by d.id desc
+  </select>
+  
+ 
+  
+  <!-- 
+   <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from m_order_detail  
+    <include refid="queryByMap" />
+	order by id desc
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+   -->
+  
+  
+  
+  
+</mapper>

@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.GGoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.GGoods" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goods_num" property="goodsNum" jdbcType="VARCHAR" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="search_flag" property="searchFlag" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="catalogue_id" property="catalogueId" jdbcType="BIGINT" />
+    <result column="catalogue" property="catalogue" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="min_limit" property="minLimit" jdbcType="DOUBLE" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="rest_quantity" property="restQuantity" jdbcType="INTEGER" />
+    <result column="progress" property="progress" jdbcType="DOUBLE" />
+    <result column="turnaround" property="turnaround" jdbcType="INTEGER" />
+    <result column="issue" property="issue" jdbcType="INTEGER" />
+    <result column="total_issue" property="totalIssue" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="sale_time" property="saleTime" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="rule" property="rule" jdbcType="INTEGER" />
+    <result column="amount_limit" property="amountLimit" jdbcType="DOUBLE" />
+    <result column="winner_id" property="winnerId" jdbcType="BIGINT" />
+    <result column="isTop" property="isTop" jdbcType="INTEGER" />
+    <result column="home_image" property="homeImage" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, goods_num, goods_name, goods_image, title, search_flag, description, catalogue_id, 
+    catalogue, price, min_limit, unit, rest_quantity, progress, turnaround, issue,total_issue, status, 
+    sale_time, sort, enabled, rule, amount_limit, winner_id,isTop,home_image, create_time
+  </sql>
+  
+  <!--  商品详情 查询 (不含未支付订单) -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+   select id,goods_num, goods_name, goods_image,search_flag, title,catalogue_id, catalogue, price, min_limit, unit,turnaround,issue,total_issue,status,enabled
+    ,rule,isTop,home_image, amount_limit, winner_id
+	,price - IFNULL(m.quantity,0) rest_quantity,IFNULL(truncate(m.quantity / price * 100,2) ,0) progress 
+	from g_goods g
+	left join (
+		SELECT d.goods_id,d.issue oissue,sum(d.quantity) quantity
+		from m_order o
+		 LEFT JOIN m_order_detail d on d.order_num = o.order_num
+		where o.`status` >0
+		group by d.goods_id,d.issue
+	)m on g.id = m.goods_id and g.issue = m.oissue
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+ 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from g_goods
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.GGoods" useGeneratedKeys="true" keyProperty="id"  >
+    insert into g_goods (id, goods_num, goods_name, 
+      goods_image, title, search_flag, 
+      description, catalogue_id, catalogue, price, min_limit, unit, 
+      rest_quantity, progress, turnaround, 
+      issue,total_issue, status, sale_time,  sort, enabled, rule, 
+      amount_limit, winner_id,isTop, home_image, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{goodsNum,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
+      #{goodsImage,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{searchFlag,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{catalogueId,jdbcType=BIGINT}, #{catalogue,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DOUBLE}, #{minLimit,jdbcType=DOUBLE}, #{unit,jdbcType=VARCHAR}, 
+      #{restQuantity,jdbcType=INTEGER}, #{progress,jdbcType=DOUBLE}, #{turnaround,jdbcType=INTEGER}, 
+      #{issue,jdbcType=INTEGER}, #{totalIssue,jdbcType=INTEGER},#{status,jdbcType=INTEGER}, #{saleTime,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{enabled,jdbcType=INTEGER}, #{rule,jdbcType=INTEGER}, 
+      #{amountLimit,jdbcType=DOUBLE}, #{winnerId,jdbcType=BIGINT},
+      #{isTop,jdbcType=INTEGER}, #{homeImage,jdbcType=VARCHAR},  #{createTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.GGoods" useGeneratedKeys="true" keyProperty="id" >
+    insert into g_goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodsNum != null" >
+        goods_num,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsImage != null" >
+        goods_image,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="searchFlag != null" >
+        search_flag,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="catalogueId != null" >
+        catalogue_id,
+      </if>
+      <if test="catalogue != null" >
+        catalogue,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="minLimit != null" >
+        min_limit,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="restQuantity != null" >
+        rest_quantity,
+      </if>
+      <if test="progress != null" >
+        progress,
+      </if>
+      <if test="turnaround != null" >
+        turnaround,
+      </if>
+      <if test="issue != null" >
+        issue,
+      </if>
+       <if test="totalIssue != null" >
+        total_issue,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="saleTime != null" >
+        sale_time,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="rule != null" >
+        rule,
+      </if>
+      <if test="amountLimit != null" >
+        amount_limit,
+      </if>
+      <if test="winnerId != null" >
+        winner_id,
+      </if>
+       <if test="isTop != null" >
+        isTop,
+      </if>
+       <if test="homeImage != null" >
+        home_image,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsNum != null" >
+        #{goodsNum,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImage != null" >
+        #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="searchFlag != null" >
+        #{searchFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="catalogueId != null" >
+        #{catalogueId,jdbcType=BIGINT},
+      </if>
+      <if test="catalogue != null" >
+        #{catalogue,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="minLimit != null" >
+        #{minLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="restQuantity != null" >
+        #{restQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="progress != null" >
+        #{progress,jdbcType=DOUBLE},
+      </if>
+      <if test="turnaround != null" >
+        #{turnaround,jdbcType=INTEGER},
+      </if>
+      <if test="totalIssue != null" >
+        #{totalIssue,jdbcType=INTEGER},
+      </if>
+       <if test="issue != null" >
+        #{issue,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="saleTime != null" >
+        #{saleTime,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="rule != null" >
+        #{rule,jdbcType=INTEGER},
+      </if>
+      <if test="amountLimit != null" >
+        #{amountLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="winnerId != null" >
+        #{winnerId,jdbcType=BIGINT},
+      </if>
+       <if test="isTop != null" >
+        #{isTop,jdbcType=INTEGER},
+      </if>
+      <if test="homeImage != null" >
+        #{homeImage,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.GGoods" >
+    update g_goods
+    <set >
+      <if test="goodsNum != null" >
+        goods_num = #{goodsNum,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImage != null" >
+        goods_image = #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="searchFlag != null" >
+        search_flag = #{searchFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="catalogueId != null" >
+        catalogue_id = #{catalogueId,jdbcType=BIGINT},
+      </if>
+      <if test="catalogue != null" >
+        catalogue = #{catalogue,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="minLimit != null" >
+        min_limit = #{minLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="restQuantity != null" >
+        rest_quantity = #{restQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="progress != null" >
+        progress = #{progress,jdbcType=DOUBLE},
+      </if>
+      <if test="turnaround != null" >
+        turnaround = #{turnaround,jdbcType=INTEGER},
+      </if>
+      <if test="issue != null" >
+        issue = #{issue,jdbcType=INTEGER},
+      </if>
+       <if test="totalIssue != null" >
+        total_issue = #{totalIssue,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="saleTime != null" >
+        sale_time = #{saleTime,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="rule != null" >
+        rule = #{rule,jdbcType=INTEGER},
+      </if>
+      <if test="amountLimit != null" >
+        amount_limit = #{amountLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="winnerId != null" >
+        winner_id = #{winnerId,jdbcType=BIGINT},
+      </if>
+      <if test="isTop != null" >
+        isTop = #{isTop,jdbcType=INTEGER},
+      </if>
+      <if test="homeImage != null" >
+        home_image = #{homeImage,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.GGoods" >
+    update g_goods
+    set goods_num = #{goodsNum,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_image = #{goodsImage,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      search_flag = #{searchFlag,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      catalogue_id = #{catalogueId,jdbcType=BIGINT},
+      catalogue = #{catalogue,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      min_limit = #{minLimit,jdbcType=DOUBLE},
+      unit = #{unit,jdbcType=VARCHAR},
+      rest_quantity = #{restQuantity,jdbcType=INTEGER},
+      progress = #{progress,jdbcType=DOUBLE},
+      turnaround = #{turnaround,jdbcType=INTEGER},
+      total_issue = #{totalIssue,jdbcType=INTEGER},
+      issue = #{issue,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      sale_time = #{saleTime,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=INTEGER},
+      rule = #{rule,jdbcType=INTEGER},
+      amount_limit = #{amountLimit,jdbcType=DOUBLE},
+      winner_id = #{winnerId,jdbcType=BIGINT},
+      isTop = #{isTop,jdbcType=INTEGER},
+      home_image = #{homeImage,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+ <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+ 
+   <!-- 根据map条件分页查询数据列表-->
+   <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from g_goods
+     <include refid="queryByMap" />
+	 ORDER BY sort
+	 <if test="pageIndex !=null and pageSize != null">
+	  limit #{pageIndex},#{pageSize}
+	 </if>
+  </select>
+  
+   <!-- 条件查询总个数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer" >
+    select count(1) from g_goods
+    <include refid="queryByMap" />
+  </select>
+  
+  <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+    	<if test="id != null" >
+	        and id = #{id,jdbcType=BIGINT}
+	    </if>
+      	<if test='goodsNum !=null'>
+			and UPPER(goods_num) like CONCAT('%',#{goodsNum},'%')  
+		</if>
+		<if test='goodsName !=null'>
+			and UPPER(goods_name) like CONCAT('%',#{goodsName},'%')  
+		</if>
+		<if test='searchFlag !=null'>
+			and UPPER(search_flag) like CONCAT('%',#{searchFlag},'%')  
+		</if>
+		<if test="issue !=null">
+			and issue = #{issue}
+		</if>
+		<if test="status !=null">
+			and status = #{status}
+		</if>
+		<if test="sort !=null">
+			and sort = #{sort}
+		</if>
+		<if test="isTop !=null">
+			and isTop = #{isTop}
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+   </sql>
+  
+   <!-- app客户端 根据条件获取商品(不含未支付订单),按商品上架时间排序 -->
+  <select id="queryGoodsFromApp" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+    select id,goods_num, goods_name, goods_image,search_flag, title,catalogue_id, catalogue, price, min_limit, unit,turnaround,issue,total_issue,status,enabled
+	,price - IFNULL(m.quantity,0) rest_quantity,IFNULL(truncate(m.quantity / price * 100,2) ,0) progress 
+	from g_goods g
+	left join (
+		SELECT d.goods_id,d.issue oissue,sum(d.quantity) quantity
+		from m_order o
+		 LEFT JOIN m_order_detail d on d.order_num = o.order_num
+		where o.`status` >0
+		group by d.goods_id,d.issue
+	)m on g.id = m.goods_id and g.issue = m.oissue
+     <include refid="queryByMap" />
+	 ORDER BY g.sort,g.create_time
+	 limit #{pageIndex},#{pageSize}
+  </select>
+   <!-- ORDER BY m.quantity / price DESC -->
+  
+   <!-- 生成订单时  根据条件获取商品 (含未支付订单)-->
+  <select id="queryGoodsFromAppNew" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+    select id,goods_num, goods_name, goods_image,search_flag, title,catalogue_id, catalogue, price, min_limit, unit,turnaround,issue,total_issue,status,enabled
+	,price - IFNULL(m.quantity,0) rest_quantity,IFNULL(truncate(m.quantity / price * 100,2) ,0) progress 
+	from g_goods g
+	left join (
+		SELECT d.goods_id,d.issue oissue,sum(d.quantity) quantity
+		from m_order o
+		   LEFT JOIN m_order_detail d on d.order_num = o.order_num
+		where o.`status` >=0
+		group by d.goods_id,d.issue
+	)m on g.id = m.goods_id and g.issue = m.oissue
+     <include refid="queryByMap" />
+	 ORDER BY m.quantity / price DESC
+	 limit #{pageIndex},#{pageSize}
+  </select>
+  
+  <!-- 轮播图设置查询列表 -->
+  <select id="queryGoodsLB" parameterType="java.util.Map" resultMap="BaseResultMap" >
+    select *
+	from g_goods g
+	where enabled = 1
+	order by isTop desc,create_time desc
+	limit #{pageIndex},#{pageSize}
+  </select>
+  
+  <!-- 保留最新的6个轮播图 -->
+  <update id="updateLB" >
+	update g_goods set isTop =0 where id not in (
+		SELECT t.id FROM (
+			SELECT * FROM `g_goods` where isTop = 1 ORDER BY create_time desc limit 6
+		) as t
+	)
+  </update>
+  
+   <!-- app客户端 获取置顶类型的 商品 （首页轮播图商品）,非下架、有效状态 -->
+  <select id="queryGoodsIsTop"  resultMap="BaseResultMap" >
+    select id,goods_num, goods_name, goods_image,search_flag, title,catalogue_id, catalogue, price, min_limit, 
+      unit,turnaround,issue,status,enabled,isTop,home_image,
+	price - IFNULL(m.quantity,0) rest_quantity,IFNULL(truncate(m.quantity / price * 100,2) ,0) progress 
+	from g_goods g
+	left join 
+		(SELECT d.goods_id,d.issue oissue,sum(d.quantity) quantity
+		from m_order o
+		left join m_order_detail d on o.order_num = d.order_num and o.`status` >0
+		group by d.goods_id,d.issue)m 
+	on g.id = m.goods_id and g.issue = m.oissue
+   where status !=0 and enabled=1 and isTop=1
+	 ORDER BY id DESC
+  </select>
+  
+  
+   <select id="queryDrawLotteryList" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+     SELECT g.id, g.goods_num, g.goods_name, g.goods_image, g.title,g.search_flag, g.catalogue_id, 
+    g.catalogue, g.price, g.min_limit, g.unit, g.turnaround, g.issue, g.status, w.draw_time sale_time
+	, g.enabled, g.rule, g.amount_limit, g.winner_id,w.create_time,c.nickname description
+	FROM g_goods g
+		left join m_order_win w on w.goods_id = g.id and w.issue = g.issue
+		left join c_customer c on g.winner_id = c.id
+		WHERE g.enabled = 1 and g.`status` !=0
+	order by w.draw_time desc
+  </select>
+  
+  <!-- 获取有效商品当前最大排序号 -->
+  <select id="findCurrentMaxSort" parameterType="java.util.Map" resultType="java.lang.Integer" >
+    SELECT max(sort) from g_goods WHERE enabled=1
+  </select>
+</mapper>

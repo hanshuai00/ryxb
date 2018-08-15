@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.MOrderWinMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.MOrderWin" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="goods_id" property="goodsId" jdbcType="BIGINT" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+    <result column="issue" property="issue" jdbcType="INTEGER" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="person_count" property="personCount" jdbcType="INTEGER" />
+    <result column="draw_time" property="drawTime" jdbcType="VARCHAR" />
+    <result column="win_status" property="winStatus" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="ready_comment" property="readyComment" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, goods_id, goods_name, goods_image, issue, customer_id, nickname, order_num, person_count, 
+    draw_time,win_status, create_time,ready_comment, enabled
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_order_win
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByGoodidIssue" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_order_win
+    where enabled=1 and goods_id = #{goodsId,jdbcType=BIGINT} and issue = #{issue,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_order_win
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.MOrderWin" useGeneratedKeys="true" keyProperty="id">
+    insert into m_order_win (id, goods_id, goods_name,
+      goods_image,issue, customer_id, nickname, 
+      order_num, person_count, draw_time, win_status,
+      create_time, ready_comment,enabled)
+    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR},
+      #{goodsImage,jdbcType=VARCHAR},#{issue,jdbcType=INTEGER}, #{customerId,jdbcType=BIGINT}, 
+      #{nickname,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR}, #{personCount,jdbcType=INTEGER},
+      #{drawTime,jdbcType=VARCHAR}, #{winStatus,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=VARCHAR}, #{readyComment,jdbcType=INTEGER}, #{enabled,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.MOrderWin" useGeneratedKeys="true" keyProperty="id" >
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsImage != null" >
+        goods_image,
+      </if>
+      <if test="issue != null" >
+        issue,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="personCount != null" >
+        person_count,
+      </if>
+      <if test="drawTime != null" >
+        draw_time,
+      </if>
+       <if test="winStatus != null" >
+        win_status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+       <if test="readyComment != null" >
+        ready_comment,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImage != null" >
+        #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="issue != null" >
+        #{issue,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="personCount != null" >
+        #{personCount,jdbcType=INTEGER},
+      </if>
+      <if test="drawTime != null" >
+        #{drawTime,jdbcType=VARCHAR},
+      </if>
+      <if test="winStatus != null" >
+        #{winStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="readyComment != null" >
+        #{readyComment,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.MOrderWin" >
+    update m_order_win
+    <set >
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImage != null" >
+        goods_image = #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="issue != null" >
+        issue = #{issue,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="personCount != null" >
+        person_count = #{personCount,jdbcType=INTEGER},
+      </if>
+      <if test="drawTime != null" >
+        draw_time = #{drawTime,jdbcType=VARCHAR},
+      </if>
+      <if test="winStatus != null" >
+        win_status = #{winStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="readyComment != null" >
+        ready_comment = #{readyComment,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.MOrderWin" >
+    update m_order_win
+    set goods_id = #{goodsId,jdbcType=BIGINT},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_image = #{goodsImage,jdbcType=VARCHAR},
+      issue = #{issue,jdbcType=INTEGER},
+      customer_id = #{customerId,jdbcType=BIGINT},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=VARCHAR},
+      person_count = #{personCount,jdbcType=INTEGER},
+      draw_time = #{drawTime,jdbcType=VARCHAR},
+      win_status = #{winStatus,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      ready_comment = #{readyComment,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+  
+  <!-- 根据map条件分页查询数据列表-->
+  <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from m_order_win  
+    <include refid="queryByMap" />
+	order by id desc
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1) from m_order_win 
+	  <include refid="queryByMap" />
+  </select>
+  
+   <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+    	<if test="goodsId !=null">
+			and goods_id = #{goodsId}
+		</if>
+		<if test="customerId !=null">
+			and customer_id = #{customerId}
+		</if>
+		<if test="orderNum !=null">
+			and order_num = #{orderNum}
+		</if>
+		<if test="winStatus !=null">
+			and win_status != #{winStatus}
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+  </sql>
+  
+   <!-- 根据map条件分页查询List<map>数据列表(多表级联查询) -->
+  <select id="queryListMapByPage" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT a.id, a.goods_id, a.goods_name,a.goods_image, a.issue, a.customer_id, a.nickname,
+		a.order_num,a.person_count,a.draw_time,a.win_status,a.create_time,a.ready_comment,a.enabled,
+		a.userImage,a.user_name, a.c_nikename,d.price
+	 from  
+	    (select w.id, w.goods_id, w.goods_name, w.goods_image, w.issue, w.customer_id, w.nickname, w.order_num,
+	         w.person_count, w.draw_time,w.win_status, w.create_time,w.ready_comment,w.enabled,
+	         c.userImage,c.user_name, c.nickname as c_nikename
+            from m_order_win w LEFT JOIN c_customer c
+             on w.customer_id = c.id where w.enabled=1 ORDER BY w.win_status ASC,w.id DESC) a
+	LEFT JOIN g_goods d
+    on   a.goods_id= d.id
+	where 1=1 
+		<if test="winStatus !=null">
+		and a.win_status != #{winStatus}
+	   </if>
+	   <if test="customerId !=null">
+		and a.customer_id = #{customerId}
+	   </if>
+	   <if test="goodsId !=null">
+		and a.goods_id = #{goodsId}
+	   </if>
+	   <if test="userName !=null">
+		and a.user_name = #{userName}
+	   </if>
+	   <if test="goodsName !=null">
+		and a.goods_name like #{goodsName}
+	   </if>
+	   <!-- <if test="enabled !=null">
+		and d.enabled = #{enabled}
+	  </if> -->
+	  ORDER BY a.win_status ASC,a.id DESC
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 分页查询List<map>统计数据总条数 (多表级联查询统计) -->
+  <select id="findListMapTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1)
+	 from  
+	    (select w.id, w.goods_id, w.goods_name, w.goods_image, w.issue, w.customer_id, w.nickname, w.order_num,
+		     w.person_count, w.draw_time,w.win_status, w.create_time,w.ready_comment, w.enabled,c.userImage,c.user_name, c.nickname as c_nikename
+          from m_order_win w LEFT JOIN c_customer c
+          on w.customer_id = c.id where w.enabled=1 ORDER BY w.win_status ASC,w.id DESC) a
+	LEFT JOIN g_goods d
+    on   a.goods_id= d.id
+	where 1=1 
+		<if test="winStatus !=null">
+		and a.win_status != #{winStatus}
+	   </if>
+	   <if test="customerId !=null">
+		and a.customer_id = #{customerId}
+	   </if>
+	   <if test="goodsId !=null">
+		and a.goods_id = #{goodsId}
+	   </if>
+	   <if test="userName !=null">
+		and a.user_name = #{userName}
+	   </if>
+	   <if test="goodsName !=null">
+		and a.goods_name like #{goodsName}
+	   </if>
+	   <!-- <if test="enabled !=null">
+		and d.enabled = #{enabled}
+	  </if> -->
+  </select>
+  
+  
+</mapper>

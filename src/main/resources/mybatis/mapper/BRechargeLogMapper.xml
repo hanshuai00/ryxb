@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.BRechargeLogMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.BRechargeLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="recharge_num" property="rechargeNum" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="pay_Type" property="payType" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseResultMap1" type="com.zj.ryxb.model.BRechargeLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="recharge_num" property="rechargeNum" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="pay_Type" property="payType" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, recharge_num, customer_id, amount, pay_Type, status, enabled, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_recharge_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from b_recharge_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.BRechargeLog" useGeneratedKeys="true" keyProperty="id" >
+    insert into b_recharge_log (id, recharge_num, customer_id, 
+      amount, pay_Type, status, 
+      enabled, create_time)
+    values (#{id,jdbcType=BIGINT}, #{rechargeNum,jdbcType=VARCHAR}, #{customerId,jdbcType=BIGINT}, 
+      #{amount,jdbcType=DOUBLE}, #{payType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{enabled,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.BRechargeLog" useGeneratedKeys="true" keyProperty="id"  >
+    insert into b_recharge_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="rechargeNum != null" >
+        recharge_num,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="payType != null" >
+        pay_Type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="rechargeNum != null" >
+        #{rechargeNum,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.BRechargeLog" >
+    update b_recharge_log
+    <set >
+      <if test="rechargeNum != null" >
+        recharge_num = #{rechargeNum,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="payType != null" >
+        pay_Type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.BRechargeLog" >
+    update b_recharge_log
+    set recharge_num = #{rechargeNum,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=BIGINT},
+      amount = #{amount,jdbcType=DOUBLE},
+      pay_Type = #{payType,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  
+  <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+  
+  <!-- 根据map条件分页查询数据列表-->
+  <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap1">
+    select  r.*,c.user_name,c.nickname 
+    from b_recharge_log r,c_customer c 
+    where r.customer_id=c.id
+    	<if test="customerId !=null">
+			and r.customer_id = #{customerId}
+		</if>
+		<if test="payType !=null">
+			and r.pay_Type = #{payType}
+		</if>
+		<if test="status !=null">
+			and r.status = #{status}
+		</if>
+		<if test="enabled !=null">
+			and r.enabled = #{enabled}
+		</if> 
+		<if test="userName !=null">
+			and c.user_name = #{userName}
+		</if>
+		<if test="nickName !=null">
+			and c.nickname = #{nickName}
+		</if>
+	order by r.id desc
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1) from b_recharge_log r,c_customer c 
+    where r.customer_id=c.id
+    	<if test="customerId !=null">
+			and r.customer_id = #{customerId}
+		</if>
+		<if test="payType !=null">
+			and r.pay_Type = #{payType}
+		</if>
+		<if test="status !=null">
+			and r.status = #{status}
+		</if>
+		<if test="enabled !=null">
+			and r.enabled = #{enabled}
+		</if>
+		<if test="userName !=null">
+			and c.user_name = #{userName}
+		</if>
+		<if test="nickName !=null">
+			and c.nickname = #{nickName}
+		</if>
+  </select>
+  
+   <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+    	<if test="rechargeNum !=null">
+			and recharge_num = #{rechargeNum}
+		</if>
+		<if test="customerId !=null">
+			and customer_id = #{customerId}
+		</if>
+		<if test="payType !=null">
+			and pay_Type = #{payType}
+		</if>
+		<if test="status !=null">
+			and status = #{status}
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+  </sql>
+  
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.BDistrictMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.BDistrict" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="initial" property="initial" jdbcType="CHAR" />
+    <result column="initials" property="initials" jdbcType="VARCHAR" />
+    <result column="pinyin" property="pinyin" jdbcType="VARCHAR" />
+    <result column="suffix" property="suffix" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="CHAR" />
+    <result column="order" property="order" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="selectByParentId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    SELECT id,parent_id,CONCAT(name,suffix) name,code
+	FROM b_district 
+	where parent_id = #{parentId,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insert" parameterType="com.zj.ryxb.model.BDistrict" useGeneratedKeys="true" keyProperty="id" >
+    insert into b_district (id, name, parent_id, 
+      initial, initials, pinyin, 
+      suffix, code, order)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+      #{initial,jdbcType=CHAR}, #{initials,jdbcType=VARCHAR}, #{pinyin,jdbcType=VARCHAR}, 
+      #{suffix,jdbcType=VARCHAR}, #{code,jdbcType=CHAR}, #{order,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.BDistrict" useGeneratedKeys="true" keyProperty="id" >
+    insert into b_district
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="initial != null" >
+        initial,
+      </if>
+      <if test="initials != null" >
+        initials,
+      </if>
+      <if test="pinyin != null" >
+        pinyin,
+      </if>
+      <if test="suffix != null" >
+        suffix,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="order != null" >
+        order,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="initial != null" >
+        #{initial,jdbcType=CHAR},
+      </if>
+      <if test="initials != null" >
+        #{initials,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyin != null" >
+        #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="suffix != null" >
+        #{suffix,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=CHAR},
+      </if>
+      <if test="order != null" >
+        #{order,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

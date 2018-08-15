@@ -1,1 +1,192 @@
-
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.BBonusMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.BBonus" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="bonus_name" property="bonusName" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="use_condition" property="useCondition" jdbcType="VARCHAR" />
+    <result column="indate" property="indate" jdbcType="INTEGER" />
+    <result column="bonus_type" property="bonusType" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, bonus_name, description, amount, use_condition,indate, bonus_type, enabled, 
+    create_time
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from b_bonus
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from b_bonus
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.zj.ryxb.model.BBonus" useGeneratedKeys="true" keyProperty="id" >
+    insert into b_bonus (id, bonus_name, description, 
+      amount, use_condition, indate, 
+      bonus_type, enabled, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{bonusName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DOUBLE}, #{useCondition,jdbcType=VARCHAR}, #{indate,jdbcType=INTEGER}, 
+      #{bonusType,jdbcType=INTEGER}, #{enabled,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.BBonus" useGeneratedKeys="true" keyProperty="id" >
+    insert into b_bonus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="bonusName != null" >
+        bonus_name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="useCondition != null" >
+        use_condition,
+      </if>
+      <if test="indate != null" >
+        indate,
+      </if>
+      <if test="bonusType != null" >
+        bonus_type,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="bonusName != null" >
+        #{bonusName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="useCondition != null" >
+        #{useCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="indate != null" >
+        #{indate,jdbcType=INTEGER},
+      </if>
+      <if test="bonusType != null" >
+        #{bonusType,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.BBonus" >
+    update b_bonus
+    <set >
+      <if test="bonusName != null" >
+        bonus_name = #{bonusName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="useCondition != null" >
+        use_condition = #{useCondition,jdbcType=VARCHAR},
+      </if>
+      <if test="indate != null" >
+        indate = #{indate,jdbcType=INTEGER},
+      </if>
+      <if test="bonusType != null" >
+        bonus_type = #{bonusType,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.BBonus" >
+    update b_bonus
+    set bonus_name = #{bonusName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DOUBLE},
+      use_condition = #{useCondition,jdbcType=VARCHAR},
+      indate = #{indate,jdbcType=INTEGER},
+      bonus_type = #{bonusType,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  
+ <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+  
+  <!-- 根据map条件查询红包种类 -->
+  <select id="queryBBonusList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from b_bonus  
+    <include refid="queryByMap" />
+	order by id desc
+  </select>
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1) from b_bonus 
+	  <include refid="queryByMap" />
+  </select>
+  
+   <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+      	<if test='bonusName !=null'>
+			and bonus_name  like #{bonusName}
+		</if>
+		<if test='useCondition !=null'>
+			and use_condition like #{useCondition}
+		</if>
+		<if test="amount !=null">
+			and amount = #{amount}
+		</if>
+		<!-- &lt;= 表示： <= -->
+		<if test="indate !=null">
+			and indate &lt;= #{indate}
+		</if>
+		<if test="bonusType !=null">
+			and bonus_type = #{bonusType}
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+  </sql>
+  
+</mapper>

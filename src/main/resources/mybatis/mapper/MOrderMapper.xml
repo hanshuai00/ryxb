@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.MOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.MOrder" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="total_amount" property="totalAmount" jdbcType="DOUBLE" />
+    <result column="total_quantity" property="totalQuantity" jdbcType="INTEGER" />
+    <result column="alipay_amount" property="alipayAmount" jdbcType="DOUBLE" />   
+    <result column="bonus_id" property="bonusId" jdbcType="BIGINT" />
+    <result column="messageInfo" property="messageinfo" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_num, customer_id, total_amount, total_quantity, alipay_amount,bonus_id, messageInfo, status, enabled, 
+    create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByOrderNum" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_order
+    where order_num = #{orderNum,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.MOrder" useGeneratedKeys="true" keyProperty="id" >
+    insert into m_order (id, order_num, customer_id, 
+      total_amount, total_quantity,alipay_amount, bonus_id, messageInfo, 
+      status, enabled, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderNum,jdbcType=VARCHAR}, #{customerId,jdbcType=BIGINT}, 
+      #{totalAmount,jdbcType=DOUBLE}, #{totalQuantity,jdbcType=INTEGER},#{alipayAmount,jdbcType=DOUBLE}, 
+      #{bonusId,jdbcType=BIGINT}, #{messageinfo,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{enabled,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.MOrder" useGeneratedKeys="true" keyProperty="id" >
+    insert into m_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="totalAmount != null" >
+        total_amount,
+      </if>
+      <if test="totalQuantity != null" >
+        total_quantity,
+      </if>
+      <if test="alipayAmount != null" >
+        alipay_amount,
+      </if>
+      <if test="messageinfo != null" >
+        messageInfo,
+      </if>
+      <if test="bonusId != null" >
+        bonus_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmount != null" >
+        #{totalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="totalQuantity != null" >
+        #{totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="alipayAmount != null" >
+        #{alipayAmount,jdbcType=DOUBLE},
+      </if>
+       <if test="bonusId != null" >
+        #{bonusId,jdbcType=BIGINT},
+      </if>
+      <if test="messageinfo != null" >
+        #{messageinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.MOrder" >
+    update m_order
+    <set >
+      <if test="orderNum != null" >
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmount != null" >
+        total_amount = #{totalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="totalQuantity != null" >
+        total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="alipayAmount != null" >
+        alipay_amount = #{alipayAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="messageinfo != null" >
+        messageInfo = #{messageinfo,jdbcType=VARCHAR},
+      </if>
+       <if test="bonusId != null" >
+        bonus_id = #{bonusId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.MOrder" >
+    update m_order
+    set order_num = #{orderNum,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=BIGINT},
+      total_amount = #{totalAmount,jdbcType=DOUBLE},
+      total_quantity = #{totalQuantity,jdbcType=INTEGER},
+      alipay_amount = #{alipayAmount,jdbcType=DOUBLE},
+      messageInfo = #{messageinfo,jdbcType=VARCHAR},
+      bonus_id = #{bonusId,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+   <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+  
+  <!-- 根据map条件分页查询数据列表-->
+  <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from m_order  
+    <include refid="queryByMap" />
+	order by id desc
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1) from m_order 
+	  <include refid="queryByMap" />
+  </select>
+  
+   <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+    	<if test="orderNum !=null">
+			and order_num = #{orderNum}
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+  </sql>
+  
+  
+  <!-- 根据客户id查询订单流水号集合 -->
+  <select id="queryOrderNumByCusId" parameterType="java.lang.Long" resultType="java.util.List">
+    select o.order_num
+    from m_order o where o.enabled=1 and  o.customer_id = #{customId,jdbcType=BIGINT}
+	order by id desc
+  </select>
+  
+</mapper>

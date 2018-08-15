@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.CAmountMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.CAmount" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="cur_amount" property="curAmount" jdbcType="DOUBLE" />
+    <result column="actual_amount" property="actualAmount" jdbcType="DOUBLE" />
+    <result column="recharge_type" property="rechargeType" jdbcType="INTEGER" />
+    <result column="remain_amout" property="remainAmout" jdbcType="DOUBLE" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, customer_id, cur_amount, actual_amount, recharge_type, remain_amout, enabled, 
+    create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from c_amount
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+ 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from c_amount
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.CAmount" useGeneratedKeys="true" keyProperty="id" >
+    insert into c_amount (id, customer_id, cur_amount, 
+      actual_amount, recharge_type, remain_amout, 
+      enabled, create_time)
+    values (#{id,jdbcType=BIGINT}, #{customerId,jdbcType=BIGINT}, #{curAmount,jdbcType=DOUBLE}, 
+      #{actualAmount,jdbcType=DOUBLE}, #{rechargeType,jdbcType=INTEGER}, #{remainAmout,jdbcType=DOUBLE}, 
+      #{enabled,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.CAmount" useGeneratedKeys="true" keyProperty="id" >
+    insert into c_amount
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="curAmount != null" >
+        cur_amount,
+      </if>
+      <if test="actualAmount != null" >
+        actual_amount,
+      </if>
+      <if test="rechargeType != null" >
+        recharge_type,
+      </if>
+      <if test="remainAmout != null" >
+        remain_amout,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="curAmount != null" >
+        #{curAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="actualAmount != null" >
+        #{actualAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="rechargeType != null" >
+        #{rechargeType,jdbcType=INTEGER},
+      </if>
+      <if test="remainAmout != null" >
+        #{remainAmout,jdbcType=DOUBLE},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.CAmount" >
+    update c_amount
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="curAmount != null" >
+        cur_amount = #{curAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="actualAmount != null" >
+        actual_amount = #{actualAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="rechargeType != null" >
+        recharge_type = #{rechargeType,jdbcType=INTEGER},
+      </if>
+      <if test="remainAmout != null" >
+        remain_amout = #{remainAmout,jdbcType=DOUBLE},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.CAmount" >
+    update c_amount
+    set customer_id = #{customerId,jdbcType=BIGINT},
+      cur_amount = #{curAmount,jdbcType=DOUBLE},
+      actual_amount = #{actualAmount,jdbcType=DOUBLE},
+      recharge_type = #{rechargeType,jdbcType=INTEGER},
+      remain_amout = #{remainAmout,jdbcType=DOUBLE},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+   <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+    
+    <!-- 根据customerId获取最后一条记录  -->
+    <select id="getAmountByCustomerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from c_amount
+    where enabled =1 and customer_id = #{customerId,jdbcType=BIGINT}
+    ORDER BY id desc LIMIT 1
+  </select>
+  
+   <!-- 根据map条件分页查询数据列表-->
+  <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from c_amount  
+    <include refid="queryByMap" />
+	order by id desc
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1) from c_amount 
+	  <include refid="queryByMap" />
+  </select>
+  
+   <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+		<if test="customerId !=null">
+			and customer_id = #{customerId}
+		</if>
+		<if test="rechargeType !=null">
+			and recharge_type = #{rechargeType}
+		</if>
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+  </sql>
+   <!-- 统计用户总的充值或消费金额 -->
+   <select id="getTotalAmount" parameterType="java.util.Map" resultType="java.lang.Double">
+	SELECT sum(actual_amount) from c_amount 
+	  <include refid="queryByMap" />
+  </select>
+  
+   
+</mapper>

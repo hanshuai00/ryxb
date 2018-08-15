@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zj.ryxb.dao.MCartMapper" >
+  <resultMap id="BaseResultMap" type="com.zj.ryxb.model.MCart" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="customer_id" property="customerId" jdbcType="BIGINT" />
+    <result column="goods_id" property="goodsId" jdbcType="BIGINT" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="min_limit" property="minLimit" jdbcType="DOUBLE" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="issue" property="issue" jdbcType="INTEGER" />
+    <result column="rest_quantity" property="restQuantity" jdbcType="INTEGER" />
+    <result column="progress" property="progress" jdbcType="DOUBLE" />
+    <result column="enabled" property="enabled" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, customer_id, goods_id, goods_name, goods_image, price, min_limit, quantity, issue, 
+    rest_quantity, progress, enabled, create_time
+  </sql>
+  <!-- 购物车查询时  统计剩余数量时(含未支付订单)-->
+  <select id="selectByCustomerID" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  	select c.goods_id, c.goods_name, c.goods_image, c.price, c.min_limit, c.quantity, c.issue
+	,if(c.issue &lt; g.issue,0,c.price - IFNULL(m.oquantity,0)) rest_quantity
+	,if(c.issue &lt; g.issue,100,IFNULL(truncate( m.oquantity / c.price * 100,2) ,0)) progress
+	from m_cart c
+	left join g_goods g on c.goods_id = g.id
+	left join (
+			SELECT d.goods_id ogoods_id,d.issue oissue,sum(d.quantity) oquantity
+			from m_order o
+			LEFT JOIN m_order_detail d on d.order_num = o.order_num
+			where o.`status` >=0
+			group by d.goods_id,d.issue
+	)m on c.goods_id = m.ogoods_id and c.issue = m.oissue
+    where c.customer_id = #{customerId,jdbcType=BIGINT} and c.enabled =1
+  </select>
+  
+  <select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_cart
+    where customer_id = #{customerId,jdbcType=BIGINT} and goods_id = #{goodsId,jdbcType=BIGINT} and enabled =1
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from m_cart
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from m_cart
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.zj.ryxb.model.MCart" useGeneratedKeys="true" keyProperty="id" >
+    insert into m_cart (id, customer_id, goods_id, 
+      goods_name, goods_image, price, 
+      min_limit, quantity, issue, 
+      rest_quantity, progress, enabled, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{customerId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, 
+      #{goodsName,jdbcType=VARCHAR}, #{goodsImage,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{minLimit,jdbcType=DOUBLE}, #{quantity,jdbcType=INTEGER}, #{issue,jdbcType=INTEGER}, 
+      #{restQuantity,jdbcType=INTEGER}, #{progress,jdbcType=DOUBLE}, #{enabled,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zj.ryxb.model.MCart" useGeneratedKeys="true" keyProperty="id" >
+    insert into m_cart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsImage != null" >
+        goods_image,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="minLimit != null" >
+        min_limit,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="issue != null" >
+        issue,
+      </if>
+      <if test="restQuantity != null" >
+        rest_quantity,
+      </if>
+      <if test="progress != null" >
+        progress,
+      </if>
+      <if test="enabled != null" >
+        enabled,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImage != null" >
+        #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="minLimit != null" >
+        #{minLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="issue != null" >
+        #{issue,jdbcType=INTEGER},
+      </if>
+      <if test="restQuantity != null" >
+        #{restQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="progress != null" >
+        #{progress,jdbcType=DOUBLE},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zj.ryxb.model.MCart" >
+    update m_cart
+    <set >
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsImage != null" >
+        goods_image = #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="minLimit != null" >
+        min_limit = #{minLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="issue != null" >
+        issue = #{issue,jdbcType=INTEGER},
+      </if>
+      <if test="restQuantity != null" >
+        rest_quantity = #{restQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="progress != null" >
+        progress = #{progress,jdbcType=DOUBLE},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zj.ryxb.model.MCart" >
+    update m_cart
+    set customer_id = #{customerId,jdbcType=BIGINT},
+      goods_id = #{goodsId,jdbcType=BIGINT},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_image = #{goodsImage,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      min_limit = #{minLimit,jdbcType=DOUBLE},
+      quantity = #{quantity,jdbcType=INTEGER},
+      issue = #{issue,jdbcType=INTEGER},
+      rest_quantity = #{restQuantity,jdbcType=INTEGER},
+      progress = #{progress,jdbcType=DOUBLE},
+      enabled = #{enabled,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- +++++++++++++++++++++    自动生成之后代码                +++++++++++++++++ -->
+  
+  <!-- 根据map条件分页查询数据列表-->
+  <select id="queryListByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from m_cart  
+    <include refid="queryByMap" />
+	order by id desc
+	<if test="pageIndex !=null and pageSize != null">
+	 limit #{pageIndex},#{pageSize}
+	</if>
+  </select>
+  
+  <!-- 统计数据总条数 -->
+  <select id="findTotalCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+	SELECT count(1) from m_cart 
+	  <include refid="queryByMap" />
+  </select>
+  
+   <!-- 构建查询参数 -->
+  <sql id="queryByMap" >
+    <where >1=1
+		<if test="enabled !=null">
+			and enabled = #{enabled}
+		</if>
+    </where>
+  </sql>
+  
+  <delete id="deleteByGoodsId" parameterType="java.lang.Long" >
+    delete from m_cart
+    where goods_id = #{goodsId,jdbcType=BIGINT}
+  </delete>
+  
+</mapper>
