@@ -1,0 +1,79 @@
+@charset"utf-8";
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,
+abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,
+strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,
+table,caption,tbody,tfoot,thead,tr,
+th,td{
+margin:0;
+padding:0;
+border:0;outline:0;
+font-weight:inherit;
+font-style:inherit;
+font-size:13px;
+font-family:microsoft yahei;
+vertical-align:top
+}
+:focus{outline:0}
+body{color:#2f332a;font:15px/21px microsoft yahei,Arial,Helvetica,simsun,sans-serif;}
+p{padding-bottom:1px}
+ol,ul{list-style:none}
+i{margin-right:3px;}
+table{border-collapse:separate;border-spacing:0}
+caption,th,td{text-align:left;font-weight:normal}
+strong{font-weight:bold}
+em{font-style:italic}
+textarea{resize:none}
+
+.right{float:right}
+.left{float:left}
+.hide{display:none}
+.round{-moz-border-radius:15px;-webkit-border-radius:15px;-khtml-border-radius:15px;border-radius:15px}
+.clear{clear:both}
+.clearfix{display:block;zoom:1;}
+.clearfix:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}
+html[xmlns].clearfix{display:block}
+*html .clearfix{height:1%}
+fieldset,img{border:0}
+
+label:hover{color:#f60;}
+a,label{cursor: pointer;}
+a:link {
+    color: #000000;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #000000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ff7f24;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #ff7f24;
+    text-decoration: underline;
+}
+
+button {
+    cursor: pointer;
+    padding:0;
+    font-family:microsoft yahei;
+    font-size:13px;
+}
+
+table {
+    table-layout: fixed;
+}
+
+    table td {
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+.ie7 iframe{border:0;}
+/*
+::-ms-clear { display: none;}
+::-ms-reveal { display: none;}
+*/

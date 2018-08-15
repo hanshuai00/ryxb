@@ -1,0 +1,92 @@
+.not-padding {
+    padding: 0;
+}
+.relative {
+    position: relative;
+}
+
+/** -------------  分页   开始 ------------- */
+.row_wj { padding-right:30px; padding-bottom: 10px; overflow: hidden; clear:both; }
+
+.quotes {
+	 margin-top:10px;
+	 height:32px;
+     display:inline-block;
+}
+.quotes a {
+	height:32px;
+	display:inline-block;
+	line-height:32px;
+	color:#333;
+	margin-right: 2px;
+	text-decoration: none;
+	background-color:#e5e5e5;
+	 text-align:center;
+	 width:26px;
+	 text-align:center;
+	 
+}
+.quotes a:hover { color: #999999;}
+.quotes a:active { text-decoration:underline;}
+.quotes .current{ color:#ff0000;}
+.quotes .disabled:hover{ background-position:0px -40px;}
+.quotes .disabled:active{ background-position:0px -80px;}
+.quotes .next_page_left {
+	width:32px;
+	height:32px;
+	display:inline-block;
+	background: url(../images/icon_77.png) no-repeat;
+	cursor:pointer;
+}
+.quotes .next_page_left:hover{background-position:0px -40px;}
+.quotes .next_page_left:active{background-position:0px -80px;}
+.quotes .next_page_left.disabled{ background-position:0px -120px; cursor:text;}
+
+.quotes .next_page_right{
+	width:32px;
+	height:32px;
+	display:inline-block;
+	background: url(../images/icon_77.png) no-repeat;
+	background-position:-40px 0px;
+	cursor:pointer;
+	padding:0px;
+ }
+.quotes .next_page_right:hover{background-position:-40px -40px;}
+.quotes .next_page_right:active{background-position:-40px -80px;}
+.quotes .next_page_right.disabled{ background-position:-40px -120px; cursor:text;}
+
+.quotes .next_page_left_lp {
+	width:32px;
+	height:32px;
+	display:inline-block;
+	background:url(../images/left.png) no-repeat;
+	cursor:pointer;
+	background-position:0px -40px;
+	padding:0px;
+}
+.quotes .next_page_left_lp:hover {
+    background-position: 0 -40px;
+}
+.quotes .next_page_left_lp:active {
+    background-position: 0 -80px;
+}
+.quotes .next_page_left_lp.disabled{ background-position:0px 0px; cursor:text;}
+
+.quotes .next_page_right_lp{
+	 width:32px;
+	height:32px;
+	display:inline-block;
+	background: url(../images/right.png) no-repeat;
+	background-position:0px -40px;
+	cursor:pointer;
+	padding:0px;
+ }
+.quotes .next_page_right_lp:hover {
+    background-position: 0 -80px;
+}
+.quotes .next_page_right_lp:active {
+    background-position: 0 -120px;
+}
+.quotes .next_page_right_lp.disabled{ background-position:0px 0px; cursor:text;}
+
+/** -------------  分页   结束 ------------- */
