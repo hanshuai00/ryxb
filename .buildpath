@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="src/main/java"/>
+	<buildpathentry kind="src" path="src/main/resources"/>
+	<buildpathentry kind="src" path="src/test/java"/>
+	<buildpathentry kind="src" path="src/test/resources"/>
+	<buildpathentry kind="con" path="org.eclipse.dltk.mod.launching.INTERPRETER_CONTAINER"/>
+	<buildpathentry kind="con" path="org.eclipse.vjet.eclipse.core.JSNATIVE_CONTAINER/JS Native Types"/>
+	<buildpathentry kind="con" path="org.eclipse.vjet.eclipse.core.BROWSER_CONTAINER/Browser SDK"/>
+	<buildpathentry external="true" kind="lib" path="D:/tools/apache-maven-3.0.5/repo/org/apache/hadoop/hadoop-yarn-common/2.5.1/hadoop-yarn-common-2.5.1.jar"/>
+	<buildpathentry external="true" kind="lib" path="D:/tools/apache-maven-3.0.5/repo/com/alibaba/druid/1.0.5/druid-1.0.5.jar"/>
+	<buildpathentry external="true" kind="lib" path="D:/tools/apache-maven-3.0.5/repo/org/apache/hive/hive-service/2.1.0/hive-service-2.1.0.jar"/>
+</buildpath>

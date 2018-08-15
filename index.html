@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Insert title here</title>
+<script src="jquery-1.11.3.min.js"></script>
+<script>
+	function uploadFile() {
+		$('#result').text("");
+		var documentData = new FormData();
+		documentData.enctype="multipart/form-data";
+		var file = $('#file')[0].files[0];
+		documentData.append('file', file);
+		documentData.append('fileName', file.name);
+		documentData.append('imagePath',$("#path").val());
+		$.ajax({
+			url : '/uploader/service/webservice/upload/',
+			type : 'POST',
+			data : documentData,
+			cache : false,
+			contentType : false,
+			processData : false,
+			success : function(resp) {
+				console.log(resp);
+				$('#result').html("<img src=' " + resp.imagePath + resp.imageName +" ' />");
+			}
+		});
+
+		return false;
+	}
+</script>
+</head>
+<body>
+	<div style="height: 100%; width: 100%;">
+		<div style="float: left;width: 100%;">
+			<input id="file" type="file" class="findDocumentOnboarding" /> 
+			<input type="text" id="path" placeholder="请输入参数" " value="goods">
+			<input type="button" value="Upload document" onclick='uploadFile();' />
+			<br/>
+		</div>
+		<div id="result" style="float: left; padding: 10px"></div>
+	</div>
+</body>
+</html>
